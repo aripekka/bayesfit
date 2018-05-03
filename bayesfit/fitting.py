@@ -4,6 +4,22 @@ import numpy as np
 
 from .common import maximize_likelihood
 
+class FitResult:
+    '''
+    Class to contain the result from the fitting routines.
+    '''
+    def __init__(self,p,cov,L):
+        self.p = p
+        self.cov = cov
+        self.L = L
+
+    def get_result(self):
+        '''
+        Get quickly the fitted paramters and their uncertainties (i.e. the
+        square roots of the diagonal elements of the covariance matrix).
+        '''
+        return self.p, np.sqrt(np.diag(self.cov)) 
+
 def outlier_fit(f_model,p0,x,y,sigma0,method='conservative'):
     '''
     Least squares fitting algorithm with outlier handling. Fits the given model
