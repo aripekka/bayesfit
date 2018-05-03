@@ -3,6 +3,16 @@ from __future__ import division, print_function
 import numpy as np
 import scipy.optimize as so
 
+def get_result(output):
+    '''
+    An auxiliary function to quickly obtain the fit parameters and their
+    uncertainties from the fitting function outputs. Basically takes the
+    optimized parameters and the square root from the diagonal of the
+    covariance matrix and returns vectors p and perr.
+    '''
+
+    return output[0], np.sqrt(np.diag(output[1]))
+
 def outlier_fit(f_model,p0,x,y,sigma0,method='conservative'):
     '''
     Least squares fitting algorithm with outlier handling. Fits the given model
