@@ -64,15 +64,13 @@ def least_squares(f_model,p0,x,y,yerr=1,noise_scaling=False):
     '''
 
     #define the likelihood for chi squared
-    def L(p):
-        return -0.5*np.sum((y-f_model(x,*p))**2/yerr**2)
+    if noise_scaling == False:
+        def L(p):
+            return -0.5*np.sum((y-f_model(x,*p))**2/yerr**2)
+    else:
+        def L(p):
+            return -0.5*y.size*np.log(np.sum((y-f_model(x,*p))**2/yerr**2))
 
     p, cov = maximize_likelihood(L,p0)
 
-    if noise_scaling == False:
-        return FitResult(p, cov, L)
-    else:
-        #Allowing errors to scale corresponds to maximizing L = - N/2*ln(chi^2).
-        #This leads to the same optimal as with the ordinary case but with
-        #scaled covariance matrix
-        return FitResult(p, -cov*2*L(p)/y.size, L)
+    return FitResult(p, cov, L)
