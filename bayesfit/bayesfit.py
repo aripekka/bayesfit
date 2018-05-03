@@ -3,6 +3,35 @@ from __future__ import division, print_function
 import numpy as np
 import scipy.optimize as so
 
+def outlier_fit(f_model,p0,x,y,sigma0,method='conservative'):
+    '''
+    Least squares fitting algorithm with outlier handling. Fits the given model
+    f_model(x,*p) to the (x,y) data. The initial guess for the parameters p0 is
+    to be given.
+
+    sigma0 has a slightly different function dependending on the used method.
+    With 'conservative' sigma0 is the lower bound for the uncertainty of each
+    data point upper value being unlimited. This corresponds to the prior
+    sigma0/sigma^2 when sigma >= sigma0, 0 otherwise.
+
+    With 'cauchy' the uncertainties are assumed to be of the same order as
+    sigma0 but they can be either smaller or larger. The prior in this case
+    is proportional to exp(-sigma0^2/sigma^2)/sigma^2.
+    '''
+
+    #define the likelihood for chi squared
+    if method=='conservative':
+        def L(p):
+            R = (f_model(x,*p)-y)/sigma0
+            return np.sum(np.log((1-np.exp(-0.5*R**2))/R**2))
+    elif method=='cauchy':
+        def L(p):
+            R = (f_model(x,*p)-y)/sigma0
+            return -np.sum(np.log(1+0.5*R**2))
+
+    p, cov = maximize_likelihood(L,p0)
+    return p, cov
+
 def least_squares(f_model,p0,x,y,yerr=1,noise_scaling=False):
     '''
     Least squares fitting. Fits the given model f_model(x,*p) to the (x,y) data.
