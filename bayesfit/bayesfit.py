@@ -73,11 +73,13 @@ def maximize_likelihood(L,x0,args=()):
 
     res = so.minimize(negL,x0,args,initial_method)
     if not res.success:
-        raise TypeError('Initial optimization failed: ' + res.message)
+        raise Exception('Initial optimization failed: ' + res.message + '\n' +
+                        'Consider adjusting the initial guess.')
 
     #Optimize using BFGS
     res = so.minimize(negL,res.x,args,'BFGS')
     if not res.success:
-        raise TypeError('Optimization failed: ' + res.message)
+        raise Exception('BFGS optimization failed: ' + res.message + '\n' +
+                        'Consider adjusting the initial guess.')
 
     return res.x, res.hess_inv
