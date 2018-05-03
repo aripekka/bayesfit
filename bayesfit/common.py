@@ -28,4 +28,32 @@ def maximize_likelihood(L,x0,args=()):
         raise Exception('BFGS optimization failed: ' + res.message + '\n' +
                         'Consider adjusting the initial guess.')
 
-    return res.x, res.hess_inv
+    #Apparently in at least some versions of scipy, the inverse Hessian given
+    #by the BFGS minimization is incorrect. Thus the inverse of hessian is
+    #calculated separately here
+
+    def L1(x):
+        return L(x,*args)
+
+    H = hessian(L1,res.x)
+
+    return res.x, -np.linalg.inv(H)
+
+def hessian(f,x0,epsilon = 1e-5):
+    '''
+    Computes the Hessian of f(x) at x0 numerically using finite differences.
+    '''
+
+    H = np.zeros((x0.size,x0.size))
+
+    for i in range(x0.size):
+        for j in range(x0.size):
+            dx1 = np.zeros(x0.shape)
+            dx2 = np.zeros(x0.shape)
+
+            dx1[i] = epsilon
+            dx2[j] = epsilon
+
+            H[i,j] = (f(x0+dx1+dx2)-f(x0+dx1-dx2)-f(x0-dx1+dx2)+f(x0-dx1-dx2))/(4*epsilon*epsilon)
+
+    return H
