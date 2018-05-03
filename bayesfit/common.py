@@ -29,12 +29,3 @@ def maximize_likelihood(L,x0,args=()):
                         'Consider adjusting the initial guess.')
 
     return res.x, res.hess_inv
-
-def get_result(output):
-    '''
-    An auxiliary function to quickly obtain the fit parameters and their
-    uncertainties from the fitting function outputs. Basically takes the
-    optimized parameters and the square root from the diagonal of the
-    covariance matrix and returns vectors p and perr.
-    '''
-    return output[0], np.sqrt(np.diag(output[1]))
