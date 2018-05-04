@@ -48,8 +48,8 @@ def posterior(fitresult,plot_likelihood=False):
         plt.legend()
 
     elif p0.size == 2:
-        x = np.linspace(p0[0]-5*np.sqrt(cov[0,0]),p0[0]+5*np.sqrt(cov[0,0]),150)
-        y = np.linspace(p0[1]-5*np.sqrt(cov[1,1]),p0[1]+5*np.sqrt(cov[1,1]),150)
+        x = np.linspace(p0[0]-5*np.sqrt(cov[0,0]),p0[0]+5*np.sqrt(cov[0,0]),100)
+        y = np.linspace(p0[1]-5*np.sqrt(cov[1,1]),p0[1]+5*np.sqrt(cov[1,1]),100)
 
         X,Y = np.meshgrid(x,y)
 
@@ -65,20 +65,20 @@ def posterior(fitresult,plot_likelihood=False):
         L = L-np.max(L[:])
 
         #Calculate L values for the gaussian approximation
-        Lapprox = np.zeros(X.shape)           
+        Lapprox = np.zeros(X.shape)
 
         for i in range(L.shape[0]):
             for j in range(L.shape[1]):
-                coord = np.array([[X[i,j]-p0[0],Y[i,j]-p0[1]]]).T            
-                Lapprox[i,j] = -0.5*np.dot(coord.T,np.dot(invcov,coord))            
+                coord = np.array([[X[i,j]-p0[0],Y[i,j]-p0[1]]]).T
+                Lapprox[i,j] = -0.5*np.dot(coord.T,np.dot(invcov,coord))
 
         if plot_likelihood:
-            plt.pcolor(X,Y,L)      
+            plt.pcolor(X,Y,L)
 
         else:
             #Compute probablity
             p = np.exp(L)
-            
+
             plt.pcolor(X,Y,p)
 
 
@@ -98,4 +98,3 @@ def posterior(fitresult,plot_likelihood=False):
 
     else:
         print('More than 2-parameter plots not supported yet!')
-        
