@@ -2,7 +2,7 @@ from __future__ import division, print_function
 
 import numpy as np
 
-from .common import maximize_likelihood
+from .core import maximize_likelihood
 
 class FitResult:
     '''
