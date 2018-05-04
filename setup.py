@@ -15,9 +15,7 @@ setup(name='bayesfit',
       author_email='honkanen.ap@gmail.com',
       url='https://github.com/aripekka/bayesfit/',
       packages=[
-                'bayesfit.core',
-                'bayesfit.fit',
-                'bayesfit.plot',
+                'bayesfit',
                ],
       install_requires=[
                         'numpy',
