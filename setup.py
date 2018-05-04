@@ -10,7 +10,7 @@ from setuptools import setup
 
 setup(name='bayesfit',
       version='0.1.0',
-      description='AP's Bayesian fitting and data analysis toolbox.',
+      description="AP's Bayesian fitting and data analysis toolbox.",
       author='Ari-Pekka Honkanen',
       author_email='honkanen.ap@gmail.com',
       url='https://github.com/aripekka/bayesfit/',
