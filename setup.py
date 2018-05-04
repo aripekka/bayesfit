@@ -8,7 +8,7 @@ from setuptools import setup
 # python setup.py sdist upload
 
 
-setup(name='bayesfit',
+setup(name='bayesfit-ap',
       version='0.1.0',
       description="AP's Bayesian fitting and data analysis toolbox.",
       author='Ari-Pekka Honkanen',
